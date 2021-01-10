@@ -43,9 +43,9 @@ public class GetLocationDetail {
         return retrofit;
     }
 
-    public void getAddress(Double latitude, Double longitude, String key) {
+    public void getAddress(Double latitude, Double longitude, String key, Locale locale) {
         try {
-            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+            Geocoder geocoder = new Geocoder(context, locale);
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             if (addresses != null && addresses.size() > 0) {
 
