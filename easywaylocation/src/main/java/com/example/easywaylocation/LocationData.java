@@ -1,7 +1,7 @@
 package com.example.easywaylocation;
 
 public class LocationData {
-    private String city, country, country_native, pincode, full_address;
+    private String city, country, country_custom, pincode, full_address;
 
     public String getCity() {
         return city;
@@ -19,12 +19,12 @@ public class LocationData {
         this.country = country;
     }
 
-    public String getCountry_native() {
-        return country_native;
+    public String getCountryCustomLocale() {
+        return country_custom;
     }
 
     public void setCountryCustomLocale(String country_native) {
-        this.country_native = country_native;
+        this.country_custom = country_native;
     }
 
     public String getPincode() {
