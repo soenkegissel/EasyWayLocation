@@ -43,6 +43,21 @@ public class GetLocationDetail {
         return retrofit;
     }
 
+    public String getCountryDefaultLocale(Double latitude, Double longitude, String key) {
+        String countryDefaultLocale = null;
+        try {
+            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses != null && addresses.size() > 0) {
+                countryDefaultLocale = addresses.get(0).getCountryName();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            getAddressFromApi(latitude, longitude, key);
+        }
+        return countryDefaultLocale;
+    }
+
     public void getAddress(Double latitude, Double longitude, String key, Locale locale) {
         try {
             Geocoder geocoder = new Geocoder(context, locale);
@@ -52,16 +67,17 @@ public class GetLocationDetail {
                 String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
                 String city = addresses.get(0).getLocality();
                 String state = addresses.get(0).getAdminArea();
-                String country = addresses.get(0).getCountryName();
+                String countryCustom = addresses.get(0).getCountryName(); // Only if successful else return NULL
+                String country = getCountryDefaultLocale(latitude, longitude, key);
                 String postalCode = addresses.get(0).getPostalCode();
                 String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
                 LocationData locationData = new LocationData();
                 locationData.setCity(city);
                 locationData.setFull_address(address);
                 locationData.setPincode(postalCode);
+                locationData.setCountryCustomLocale(countryCustom);
                 locationData.setCountry(country);
                 addressCallBack.locationData(locationData);
-
             }
         } catch (IOException e) {
             e.printStackTrace();
